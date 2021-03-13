@@ -19,6 +19,20 @@ class ApiBaseHelper {
     );
   }
 
+  Future<dynamic> put({
+    @required String url,
+    @required String body,
+    @required String pathVariable,
+  }) async {
+
+    return await _request(
+      httpMethod: "PUT",
+      url: url,
+      pathVariable: pathVariable,
+      body: body,
+    );
+  }
+
   Future<dynamic> delete({
     @required String url,
     @required String pathVariable,

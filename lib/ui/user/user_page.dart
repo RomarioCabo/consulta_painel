@@ -237,8 +237,8 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(top: 16),
       child: Row(
         children: [
-          Expanded(child: Container()),
           Expanded(child: _buttonSave()),
+          Expanded(child: _buttonUpdate()),
         ],
       ),
     );
@@ -246,10 +246,10 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
 
   Widget _buttonSave() {
     return Container(
+      padding: EdgeInsets.only(right: 12),
       child: PrimaryRaisedButton(
         leading: _userController.requestStateCrud is Loading
             ? Container(
-                margin: EdgeInsets.only(right: 12),
                 child: SpinKitDualRing(
                   color: Colors.white,
                   size: 16,
@@ -260,9 +260,28 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
         text: label_button_save,
         onPressed: _userController.requestStateCrud is Loading
             ? null
-            : () {
-                _userController.save();
-              },
+            : _userController.save,
+      ),
+    );
+  }
+
+  Widget _buttonUpdate() {
+    return Container(
+      padding: EdgeInsets.only(left: 4),
+      child: PrimaryRaisedButton(
+        leading: _userController.requestStateCrud is Loading
+            ? Container(
+                child: SpinKitDualRing(
+                  color: Colors.white,
+                  size: 16,
+                  lineWidth: 3,
+                ),
+              )
+            : null,
+        text: label_button_update,
+        onPressed: _userController.requestStateCrud is Loading
+            ? null
+            : _userController.update,
       ),
     );
   }
@@ -321,7 +340,12 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
               itemBuilder: (context, index) {
                 return ItemTileUser(
                   item: _userController.users[index],
-                  onPressedEdit: null,
+                  onPressedEdit: () {
+                    _userController.setFields(
+                      _userController.users[index],
+                      index,
+                    );
+                  },
                   onPressedDelete: () {
                     _openConfirmDialog(_userController.users[index]);
                   },

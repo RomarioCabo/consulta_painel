@@ -170,6 +170,13 @@ mixin _$UserController on UserControllerBase, Store {
     return _$deleteAsyncAction.run(() => super.delete(selectedUser));
   }
 
+  final _$updateAsyncAction = AsyncAction('UserControllerBase.update');
+
+  @override
+  Future<void> update() {
+    return _$updateAsyncAction.run(() => super.update());
+  }
+
   final _$UserControllerBaseActionController =
       ActionController(name: 'UserControllerBase');
 
@@ -224,6 +231,17 @@ mixin _$UserController on UserControllerBase, Store {
         name: 'UserControllerBase.validateAll');
     try {
       return super.validateAll(name, email, password, confirmPassword);
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setFields(UserDto selectedUser, int index) {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.setFields');
+    try {
+      return super.setFields(selectedUser, index);
     } finally {
       _$UserControllerBaseActionController.endAction(_$actionInfo);
     }

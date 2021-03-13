@@ -23,6 +23,8 @@ const String label_forgot_password = "Esqueceu a senha?";
 const String label_button_login = "Entrar";
 const String label_title_footer = "Compartilhando conhecimento.";
 const String label_subtitle_footer = "© Consulta painel — Todos os direitos reservados.";
+const String alert_message_update = "Você deve escolher um Usuário antes de alterar!";
+const String alert_message_password = "As senhas não coincidem";
 
 /// Painel
 const String label_title_appbar = "Painel";
@@ -43,6 +45,7 @@ const String label_text_field_email = "E-Mail";
 const String label_text_field_password = "Senha";
 const String label_text_field_confirm_password = "Confirme a senha";
 const String label_button_save = "Salvar";
+const String label_button_update = "Alterar";
 
 const String label_table_column_cod = "COD";
 const String label_table_column_name = "NOME";

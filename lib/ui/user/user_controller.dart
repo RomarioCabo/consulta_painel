@@ -46,6 +46,9 @@ abstract class UserControllerBase with Store {
   @observable
   String message = "";
 
+  int _selectedIdUser;
+  int _index;
+
   @observable
   ObservableList<UserDto> users;
 
@@ -85,7 +88,11 @@ abstract class UserControllerBase with Store {
     if (value.trim().isEmpty) {
       errorConfirmPassword = error_required;
     } else {
-      errorConfirmPassword = null;
+      if (value == textEditingControllerPassword.text) {
+        errorConfirmPassword = null;
+      } else {
+        errorConfirmPassword = alert_message_password;
+      }
     }
   }
 
@@ -191,6 +198,60 @@ abstract class UserControllerBase with Store {
     }
   }
 
+  @action
+  void setFields(UserDto selectedUser, int index) {
+    textEditingControllerName.text = selectedUser.name;
+    textEditingControllerEmail.text = selectedUser.email;
+
+    _selectedIdUser = selectedUser.id;
+    _index = index;
+  }
+
+  @action
+  Future<void> update() async {
+    try {
+      if (_selectedIdUser == null) {
+        this.requestStateCrud = Error(
+          error: alert_message_update,
+        );
+
+        return;
+      }
+
+      requestStateCrud = Loading();
+
+      validateName(textEditingControllerName.text.trim());
+      validateEmail(textEditingControllerEmail.text.trim());
+
+      if (errorName == null && errorEmail == null) {
+        _user = await _userRepository.put(
+          form: _getUser(
+            name: textEditingControllerName.text.trim(),
+            email: textEditingControllerEmail.text.trim(),
+            password: _getPassword(textEditingControllerPassword.text.trim()),
+          ),
+          userId: _selectedIdUser,
+        );
+
+        message = success_update_message;
+
+        users[_index].name = _user.name;
+        users[_index].email = _user.email;
+
+        _selectedIdUser = null;
+        _index = null;
+
+        _clearFields();
+      }
+
+      requestStateCrud = Completed();
+    } catch (e) {
+      this.requestStateCrud = Error(
+        error: e.toString().replaceAll("Exception:", ""),
+      );
+    }
+  }
+
   UserForm _getUser({
     String name,
     String email,
@@ -209,5 +270,11 @@ abstract class UserControllerBase with Store {
     textEditingControllerEmail.text = "";
     textEditingControllerPassword.text = "";
     textEditingControllerConfirmPassword.text = "";
+  }
+
+  String _getPassword(String password) {
+    return textEditingControllerPassword.text == null
+        ? null
+        : textEditingControllerPassword.text;
   }
 }
