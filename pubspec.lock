@@ -63,7 +63,7 @@ packages:
       name: build_daemon
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.9"
+    version: "2.1.10"
   build_resolvers:
     dependency: transitive
     description:
@@ -301,6 +301,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  image_picker_web:
+    dependency: "direct main"
+    description:
+      name: image_picker_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.9"
   intl:
     dependency: transitive
     description:
@@ -354,6 +361,13 @@ packages:
     dependency: transitive
     description:
       name: mime
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  mime_type:
+    dependency: "direct main"
+    description:
+      name: mime_type
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
@@ -655,7 +669,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.4"
   xdg_directories:
     dependency: transitive
     description:

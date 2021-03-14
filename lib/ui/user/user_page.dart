@@ -332,27 +332,29 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
   }
 
   Widget _buildContentTable() {
-    return _userController.users == null
-        ? Container()
-        : Expanded(
-            child: ListView.builder(
-              itemCount: _userController.users.length,
-              itemBuilder: (context, index) {
-                return ItemTileUser(
-                  item: _userController.users[index],
-                  onPressedEdit: () {
-                    _userController.setFields(
-                      _userController.users[index],
-                      index,
-                    );
-                  },
-                  onPressedDelete: () {
-                    _openConfirmDialog(_userController.users[index]);
-                  },
+    if (_userController.users == null) {
+      return Container();
+    } else {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: _userController.users.length,
+          itemBuilder: (context, index) {
+            return ItemTileUser(
+              item: _userController.users[index],
+              onPressedEdit: () {
+                _userController.setFields(
+                  _userController.users[index],
+                  index,
                 );
               },
-            ),
-          );
+              onPressedDelete: () {
+                _openConfirmDialog(_userController.users[index]);
+              },
+            );
+          },
+        ),
+      );
+    }
   }
 
   void _openConfirmDialog(UserDto selectedUser) {

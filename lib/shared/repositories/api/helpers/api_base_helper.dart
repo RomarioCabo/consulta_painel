@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -11,11 +12,23 @@ class ApiBaseHelper {
     @required String url,
     @required String body,
   }) async {
-
     return await _request(
       httpMethod: "POST",
       url: url,
       body: body,
+    );
+  }
+
+  Future<dynamic> postWithMultipartFile({
+    @required String url,
+    @required Uint8List multipartFile,
+    @required String queryParams,
+  }) async {
+    return await _request(
+      httpMethod: "POST",
+      url: url,
+      multipartFile: multipartFile,
+      queryParams: queryParams,
     );
   }
 
@@ -24,7 +37,6 @@ class ApiBaseHelper {
     @required String body,
     @required String pathVariable,
   }) async {
-
     return await _request(
       httpMethod: "PUT",
       url: url,
@@ -33,11 +45,23 @@ class ApiBaseHelper {
     );
   }
 
+  Future<dynamic> putWithMultipartFile({
+    @required String url,
+    @required Uint8List multipartFile,
+    @required String queryParams,
+  }) async {
+    return await _request(
+      httpMethod: "PUT",
+      url: url,
+      multipartFile: multipartFile,
+      queryParams: queryParams,
+    );
+  }
+
   Future<dynamic> delete({
     @required String url,
     @required String pathVariable,
   }) async {
-
     return await _request(
       httpMethod: "DELETE",
       url: url,
@@ -50,7 +74,6 @@ class ApiBaseHelper {
     String queryParams,
     String pathVariable,
   }) async {
-
     return await _request(
       httpMethod: "GET",
       url: url,
@@ -65,6 +88,7 @@ class ApiBaseHelper {
     String body,
     String queryParams,
     String pathVariable,
+    Uint8List multipartFile,
   }) async {
     dynamic responseJson;
 
@@ -78,11 +102,20 @@ class ApiBaseHelper {
         print("$base_url$url$queryParams$pathVariable");
       }
 
-      var request = http.Request(
-          httpMethod, Uri.parse("$base_url$url$queryParams$pathVariable"));
+      var request = _getTypeRequest(
+        httpMethod,
+        multipartFile,
+        url,
+        queryParams,
+        pathVariable,
+      );
 
       if (body != null) {
         request.body = body;
+      }
+
+      if (multipartFile != null) {
+        request.files.add(http.MultipartFile.fromBytes('file', multipartFile));
       }
 
       request.headers.addAll(headers);
@@ -106,7 +139,7 @@ class ApiBaseHelper {
     switch (response.statusCode) {
       case 201:
       case 200:
-        if(response.bodyBytes.length == 0) {
+        if (response.bodyBytes.length == 0) {
           return null;
         } else {
           return json.decode(utf8.decode(response.bodyBytes));
@@ -138,6 +171,22 @@ class ApiBaseHelper {
           response.statusCode,
           error["menssagem"],
         );
+    }
+  }
+
+  _getTypeRequest(
+    String httpMethod,
+    Uint8List pathMultipartFile,
+    String url,
+    String queryParams,
+    String pathVariable,
+  ) {
+    if (pathMultipartFile == null) {
+      return http.Request(
+          httpMethod, Uri.parse("$base_url$url$queryParams$pathVariable"));
+    } else {
+      return http.MultipartRequest(
+          httpMethod, Uri.parse("$base_url$url$queryParams$pathVariable"));
     }
   }
 }

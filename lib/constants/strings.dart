@@ -16,6 +16,9 @@ const String base_url = "http://192.168.1.4:3400/api/v1/";
 const String default_user = "Usuário";
 const String default_email = "user@user.com.br";
 
+const String label_button_save = "Salvar";
+const String label_button_update = "Alterar";
+
 /// Tela de Login
 const String label_name_user = "E-Mail";
 const String label_password = "Senha";
@@ -44,11 +47,22 @@ const String label_text_field_name = "Nome";
 const String label_text_field_email = "E-Mail";
 const String label_text_field_password = "Senha";
 const String label_text_field_confirm_password = "Confirme a senha";
-const String label_button_save = "Salvar";
-const String label_button_update = "Alterar";
 
 const String label_table_column_cod = "COD";
 const String label_table_column_name = "NOME";
 const String label_table_column_email = "E-MAIL";
 const String label_table_column_actions = "AÇÕES";
+
+/// Tela cadastro de Estado
+const String label_text_field_name_state = "Nome";
+const String label_text_field_acronym_state = "Sigla";
+const String label_text_field_path_image = "Diretório da imagem selecionada";
+const String label_button_select_image = "Selecionar Imagem";
+const String tooltip_text_select_image = "Escolha uma imagem da bandeira para o estado";
+
+const String label_table_column_cod_state = "COD";
+const String label_table_column_name_state = "NOME";
+const String label_table_column_acronym_state = "SIGLA";
+const String label_table_column_flag_state = "BANDEIRA";
+const String label_table_column_actions_state = "AÇÕES";
 

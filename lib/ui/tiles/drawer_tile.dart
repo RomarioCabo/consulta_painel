@@ -25,7 +25,7 @@ class DrawerTile extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.only(left: 8, right: 8, top: 12, bottom: 12),
           child: Row(
-            children: <Widget>[
+            children: [
               Icon(
                 icon,
                 color: selected

@@ -30,7 +30,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  mobx: #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
+  mobx:                              #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
   flutter_mobx:                      #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
   http: ^0.13.0                      #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
   get_it: ^6.0.0                     #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
@@ -38,6 +38,8 @@ dependencies:
   analyzer: '0.41.0'                 #compatibility ANDROID IOS LINUX MACOS     WINDOWS | Corrige o problema com geração do .g do mobx
   awesome_dialog: ^1.3.2             #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
   shared_preferences: ^2.0.3         #compatibility ANDROID IOS LINUX MACOS WEB
+  image_picker_web: any
+  mime_type: ^1.0.0                  #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
 
 dev_dependencies:
   mobx_codegen:

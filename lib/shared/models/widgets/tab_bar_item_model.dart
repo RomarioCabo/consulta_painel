@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:painel_cunsulta/constants/strings.dart';
+import 'package:painel_cunsulta/ui/state/state_page.dart';
 import 'package:painel_cunsulta/ui/user/user_page.dart';
 
 class TabBarItemModel {
@@ -23,7 +24,7 @@ class TabBarItemModel {
         index: 1,
         title: textTab2,
         icon: Icons.add_to_photos_rounded,
-        tab: Container(),
+        tab: StatePage(),
       ),
       TabBarItemModel(
         index: 2,
