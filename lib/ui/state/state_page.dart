@@ -9,6 +9,7 @@ import 'package:painel_cunsulta/ui/dialogs/manager_dialogs.dart';
 import 'package:painel_cunsulta/ui/state/state_controller.dart';
 import 'package:painel_cunsulta/ui/tiles/item_tile_state.dart';
 import 'package:painel_cunsulta/ui/widgets/custom_animated_builder.dart';
+import 'package:painel_cunsulta/ui/widgets/custom_text_field_icon.dart';
 import 'package:painel_cunsulta/ui/widgets/custom_text_field_primary.dart';
 import 'package:painel_cunsulta/ui/widgets/load.dart';
 import 'package:painel_cunsulta/ui/widgets/primary_raised_button.dart';
@@ -127,7 +128,12 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildRowState(),
-            _buildRowSelectImage(),
+            CustomTextFieldIcon(
+              labelText: label_text_field_path_image,
+              onTap: () {
+                _stateController.getImage();
+              },
+            ),
             _buildRowSave(),
             _buildTitleTable(),
             _buildContentTable(),
@@ -189,52 +195,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildRowSelectImage() {
-    return Container(
-      margin: EdgeInsets.only(top: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: _buildTextFieldPathImage(),
-          ),
-          _buttonSelectImage(),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildTextFieldPathImage() {
-    return Container(
-      child: CustomTextFormField(
-        labelText: label_text_field_path_image,
-        textEditingController: _stateController.textEditingControllerImage,
-        textInputAction: TextInputAction.done,
-        textCapitalization: TextCapitalization.none,
-        focusNode: _stateController.focusNodeImage,
-        onFieldSubmitted: (string) {},
-        onChanged: (string) {},
-        errorText: null,
-        enabled: false,
-      ),
-    );
-  }
-
-  Widget _buttonSelectImage() {
-    return Container(
-      padding: EdgeInsets.only(left: 12, top: 26),
-      child: PrimaryRaisedButton(
-        leading: null,
-        text: label_button_select_image,
-        onPressed: _stateController.requestStateCrud is Loading
-            ? null
-            : () {
-                _stateController.getImage();
-              },
-      ),
-    );
-  }
 
   Widget _buildRowSave() {
     return Container(
@@ -295,7 +256,8 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         ),
         Expanded(
           child: Container(
-            child: Text(label_table_column_flag_state, textAlign: TextAlign.center),
+            child: Text(label_table_column_flag_state,
+                textAlign: TextAlign.center),
           ),
         ),
         Expanded(

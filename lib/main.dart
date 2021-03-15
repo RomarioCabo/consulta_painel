@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:painel_cunsulta/shared/controllers/universal_tab_controller.dart';
-import 'package:painel_cunsulta/shared/models/dto/user_dto.dart';
 import 'package:painel_cunsulta/shared/repositories/local_storage_shared_preferences/local_storage_shared_preferences.dart';
 import 'package:painel_cunsulta/ui/login/login_page.dart';
 
@@ -17,7 +16,6 @@ void main() async {
   await localStorageSharedPreferences.initializationDone;
 
   GetIt.I.registerSingleton(localStorageSharedPreferences);
-  GetIt.I.registerSingleton(UserDto());
   GetIt.I.registerSingleton(UniversalTabController());
 
   runApp(
