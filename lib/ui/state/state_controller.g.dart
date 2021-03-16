@@ -25,19 +25,35 @@ mixin _$StateController on StateControllerBase, Store {
     });
   }
 
-  final _$requestStateCrudAtom =
-      Atom(name: 'StateControllerBase.requestStateCrud');
+  final _$requestStateSaveAtom =
+      Atom(name: 'StateControllerBase.requestStateSave');
 
   @override
-  RequestState get requestStateCrud {
-    _$requestStateCrudAtom.reportRead();
-    return super.requestStateCrud;
+  RequestState get requestStateSave {
+    _$requestStateSaveAtom.reportRead();
+    return super.requestStateSave;
   }
 
   @override
-  set requestStateCrud(RequestState value) {
-    _$requestStateCrudAtom.reportWrite(value, super.requestStateCrud, () {
-      super.requestStateCrud = value;
+  set requestStateSave(RequestState value) {
+    _$requestStateSaveAtom.reportWrite(value, super.requestStateSave, () {
+      super.requestStateSave = value;
+    });
+  }
+
+  final _$requestStateUpdateAtom =
+      Atom(name: 'StateControllerBase.requestStateUpdate');
+
+  @override
+  RequestState get requestStateUpdate {
+    _$requestStateUpdateAtom.reportRead();
+    return super.requestStateUpdate;
+  }
+
+  @override
+  set requestStateUpdate(RequestState value) {
+    _$requestStateUpdateAtom.reportWrite(value, super.requestStateUpdate, () {
+      super.requestStateUpdate = value;
     });
   }
 
@@ -71,18 +87,33 @@ mixin _$StateController on StateControllerBase, Store {
     });
   }
 
-  final _$validatedAllAtom = Atom(name: 'StateControllerBase.validatedAll');
+  final _$errorImageAtom = Atom(name: 'StateControllerBase.errorImage');
 
   @override
-  bool get validatedAll {
-    _$validatedAllAtom.reportRead();
-    return super.validatedAll;
+  String get errorImage {
+    _$errorImageAtom.reportRead();
+    return super.errorImage;
   }
 
   @override
-  set validatedAll(bool value) {
-    _$validatedAllAtom.reportWrite(value, super.validatedAll, () {
-      super.validatedAll = value;
+  set errorImage(String value) {
+    _$errorImageAtom.reportWrite(value, super.errorImage, () {
+      super.errorImage = value;
+    });
+  }
+
+  final _$validateAllAtom = Atom(name: 'StateControllerBase.validateAll');
+
+  @override
+  bool get validateAll {
+    _$validateAllAtom.reportRead();
+    return super.validateAll;
+  }
+
+  @override
+  set validateAll(bool value) {
+    _$validateAllAtom.reportWrite(value, super.validateAll, () {
+      super.validateAll = value;
     });
   }
 
@@ -98,6 +129,21 @@ mixin _$StateController on StateControllerBase, Store {
   set message(String value) {
     _$messageAtom.reportWrite(value, super.message, () {
       super.message = value;
+    });
+  }
+
+  final _$imageNameAtom = Atom(name: 'StateControllerBase.imageName');
+
+  @override
+  String get imageName {
+    _$imageNameAtom.reportRead();
+    return super.imageName;
+  }
+
+  @override
+  set imageName(String value) {
+    _$imageNameAtom.reportWrite(value, super.imageName, () {
+      super.imageName = value;
     });
   }
 
@@ -131,6 +177,13 @@ mixin _$StateController on StateControllerBase, Store {
     return _$getImageAsyncAction.run(() => super.getImage());
   }
 
+  final _$saveAsyncAction = AsyncAction('StateControllerBase.save');
+
+  @override
+  Future<void> save() {
+    return _$saveAsyncAction.run(() => super.save());
+  }
+
   final _$StateControllerBaseActionController =
       ActionController(name: 'StateControllerBase');
 
@@ -157,14 +210,39 @@ mixin _$StateController on StateControllerBase, Store {
   }
 
   @override
+  void validateImage(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateImage');
+    try {
+      return super.validateImage(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validatedAll(String name, String acronym, String image) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validatedAll');
+    try {
+      return super.validatedAll(name, acronym, image);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 requestStateInitial: ${requestStateInitial},
-requestStateCrud: ${requestStateCrud},
+requestStateSave: ${requestStateSave},
+requestStateUpdate: ${requestStateUpdate},
 errorName: ${errorName},
 errorAcronym: ${errorAcronym},
-validatedAll: ${validatedAll},
+errorImage: ${errorImage},
+validateAll: ${validateAll},
 message: ${message},
+imageName: ${imageName},
 states: ${states}
     ''';
   }

@@ -56,11 +56,7 @@ class _ItemTileStateState extends State<ItemTileState> {
           ),
         ),
         Expanded(
-          child: Image.network(
-            widget.item.urlImage,
-            width: 50,
-            height: 60,
-          ),
+          child: _buildImage(),
         ),
         _buildActionsButtons(),
       ],
@@ -83,5 +79,20 @@ class _ItemTileStateState extends State<ItemTileState> {
         ],
       ),
     );
+  }
+
+  Widget _buildImage() {
+    if (widget.item.urlImage == null) {
+      return Container(
+        width: 50,
+        height: 60,
+      );
+    } else {
+      return Image.network(
+        widget.item.urlImage,
+        width: 50,
+        height: 60,
+      );
+    }
   }
 }

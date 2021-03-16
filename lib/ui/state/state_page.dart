@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mobx/mobx.dart';
 import 'package:painel_cunsulta/constants/strings.dart';
 import 'package:painel_cunsulta/shared/models/dto/state_dto.dart';
@@ -61,8 +62,15 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
 
     _disposers.add(
       reaction(
-        (_) => _stateController.requestStateCrud,
+        (_) => _stateController.requestStateSave,
         _stateSave,
+      ),
+    );
+
+    _disposers.add(
+      reaction(
+        (_) => _stateController.requestStateUpdate,
+        _stateUpdate,
       ),
     );
   }
@@ -83,15 +91,29 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
   }
 
   void _stateSave(_) {
-    if (_stateController.requestStateCrud is Completed) {
+    if (_stateController.requestStateSave is Completed) {
       showAnimatedSuccessAlertDialog(
         context: context,
         message: _stateController.message,
       );
-    } else if (_stateController.requestStateCrud is Error) {
+    } else if (_stateController.requestStateSave is Error) {
       showAnimatedWarningAlertDialog(
         context: context,
-        message: (_stateController.requestStateCrud as Error).error,
+        message: (_stateController.requestStateSave as Error).error,
+      );
+    }
+  }
+
+  void _stateUpdate(_) {
+    if (_stateController.requestStateUpdate is Completed) {
+      showAnimatedSuccessAlertDialog(
+        context: context,
+        message: _stateController.message,
+      );
+    } else if (_stateController.requestStateUpdate is Error) {
+      showAnimatedWarningAlertDialog(
+        context: context,
+        message: (_stateController.requestStateUpdate as Error).error,
       );
     }
   }
@@ -130,11 +152,13 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
             _buildRowState(),
             CustomTextFieldIcon(
               labelText: label_text_field_path_image,
+              labelTextContent: _stateController.imageName,
+              labelTextError: _stateController.errorImage,
               onTap: () {
                 _stateController.getImage();
               },
             ),
-            _buildRowSave(),
+            _buildRowButtons(),
             _buildTitleTable(),
             _buildContentTable(),
           ],
@@ -174,7 +198,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         },
         onChanged: _stateController.validateName,
         errorText: _stateController.errorName,
-        enabled: !(_stateController.requestStateCrud is Loading),
+        enabled: !(_enableTextFields()),
       ),
     );
   }
@@ -185,25 +209,28 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         labelText: label_text_field_acronym_state,
         textEditingController: _stateController.textEditingControllerAcronym,
         textInputAction: TextInputAction.done,
-        textCapitalization: TextCapitalization.none,
+        textCapitalization: TextCapitalization.characters,
         focusNode: _stateController.focusNodeAcronym,
         onFieldSubmitted: null,
         onChanged: _stateController.validateAcronym,
         errorText: _stateController.errorAcronym,
-        enabled: !(_stateController.requestStateCrud is Loading),
+        enabled: !(_enableTextFields()),
       ),
     );
   }
 
+  bool _enableTextFields() {
+    return _stateController.requestStateSave is Loading ||
+        _stateController.requestStateUpdate is Loading;
+  }
 
-
-  Widget _buildRowSave() {
+  Widget _buildRowButtons() {
     return Container(
       margin: EdgeInsets.only(top: 16),
       child: Row(
         children: [
-          Expanded(child: Container()),
           Expanded(child: _buttonSave()),
+          Expanded(child: _buttonUpdate()),
         ],
       ),
     );
@@ -211,13 +238,62 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
 
   Widget _buttonSave() {
     return Container(
-      padding: EdgeInsets.only(left: 12),
+      padding: EdgeInsets.only(right: 12),
       child: PrimaryRaisedButton(
-        leading: null,
+        leading: _stateController.requestStateSave is Loading
+            ? Container(
+                margin: EdgeInsets.only(right: 12),
+                child: SpinKitDualRing(
+                  color: Colors.white,
+                  size: 16,
+                  lineWidth: 3,
+                ),
+              )
+            : null,
         text: label_button_save,
-        onPressed: _stateController.requestStateCrud is Loading ? null : () {},
+        onPressed: _enableSave(),
       ),
     );
+  }
+
+  Function _enableSave() {
+    if (_stateController.requestStateSave is Loading ||
+        _stateController.requestStateUpdate is Loading) {
+      return null;
+    } else {
+      return () {
+        _stateController.save();
+      };
+    }
+  }
+
+  Widget _buttonUpdate() {
+    return Container(
+      padding: EdgeInsets.only(left: 4),
+      child: PrimaryRaisedButton(
+        leading: _stateController.requestStateUpdate is Loading
+            ? Container(
+                margin: EdgeInsets.only(right: 12),
+                child: SpinKitDualRing(
+                  color: Colors.white,
+                  size: 16,
+                  lineWidth: 3,
+                ),
+              )
+            : null,
+        text: label_button_update,
+        onPressed: _enableUpdate(),
+      ),
+    );
+  }
+
+  Function _enableUpdate() {
+    if (_stateController.requestStateSave is Loading ||
+        _stateController.requestStateUpdate is Loading) {
+      return null;
+    } else {
+      return () {};
+    }
   }
 
   Widget _buildTitleTable() {

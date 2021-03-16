@@ -54,8 +54,8 @@ const String label_table_column_email = "E-MAIL";
 const String label_table_column_actions = "AÇÕES";
 
 /// Tela cadastro de Estado
-const String label_text_field_name_state = "Nome";
-const String label_text_field_acronym_state = "Sigla";
+const String label_text_field_name_state = "Nome do estado";
+const String label_text_field_acronym_state = "Sigla do estado";
 const String label_text_field_path_image = "Diretório da imagem selecionada";
 const String label_button_select_image = "Selecionar Imagem";
 const String tooltip_text_select_image = "Escolha uma imagem da bandeira para o estado";

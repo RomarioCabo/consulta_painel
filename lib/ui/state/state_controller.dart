@@ -4,6 +4,7 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mobx/mobx.dart';
 import 'package:painel_cunsulta/constants/strings.dart';
 import 'package:painel_cunsulta/shared/models/dto/state_dto.dart';
+import 'package:painel_cunsulta/shared/models/form/state_form.dart';
 import 'package:painel_cunsulta/shared/repositories/api/helpers/request_state.dart';
 import 'package:painel_cunsulta/shared/repositories/api/state_repository.dart';
 
@@ -14,17 +15,18 @@ class StateController = StateControllerBase with _$StateController;
 abstract class StateControllerBase with Store {
   TextEditingController textEditingControllerName = TextEditingController();
   TextEditingController textEditingControllerAcronym = TextEditingController();
-  TextEditingController textEditingControllerImage = TextEditingController();
 
   FocusNode focusNodeName = FocusNode();
   FocusNode focusNodeAcronym = FocusNode();
-  FocusNode focusNodeImage = FocusNode();
 
   @observable
   RequestState requestStateInitial = Initial();
 
   @observable
-  RequestState requestStateCrud = Initial();
+  RequestState requestStateSave = Initial();
+
+  @observable
+  RequestState requestStateUpdate = Initial();
 
   @observable
   String errorName;
@@ -33,10 +35,18 @@ abstract class StateControllerBase with Store {
   String errorAcronym;
 
   @observable
-  bool validatedAll = false;
+  String errorImage;
+
+  @observable
+  bool validateAll = false;
 
   @observable
   String message = "";
+
+  @observable
+  String imageName = "";
+
+  String _fileInBase64;
 
   int _selectedIdState;
   int _index;
@@ -45,8 +55,6 @@ abstract class StateControllerBase with Store {
   ObservableList<StateDto> states;
 
   StateDto _state;
-
-  var _imageSelected;
 
   StateRepository _stateRepository = StateRepository();
 
@@ -65,6 +73,32 @@ abstract class StateControllerBase with Store {
       errorAcronym = error_required;
     } else {
       errorAcronym = null;
+    }
+  }
+
+  @action
+  void validateImage(String value) {
+    if (value == null) {
+      errorImage = error_required;
+    } else {
+      errorImage = null;
+    }
+  }
+
+  @action
+  void validatedAll(
+    String name,
+    String acronym,
+    String image,
+  ) {
+    validateName(name);
+    validateAcronym(acronym);
+    validateImage(image);
+
+    validateAll = false;
+
+    if (errorName == null && errorAcronym == null && errorImage == null) {
+      validateAll = true;
     }
   }
 
@@ -90,24 +124,74 @@ abstract class StateControllerBase with Store {
   @action
   Future<void> getImage() async {
     try {
-      _imageSelected = await ImagePickerWeb.getImageInfo;
+      MediaInfo imageSelected = await ImagePickerWeb.getImageInfo;
 
-      if (_imageSelected != null) {
-        textEditingControllerImage.text = _imageSelected.fileName;
+      if (imageSelected != null) {
+        imageName = imageSelected.fileName;
+        _fileInBase64 = imageSelected.base64WithScheme;
+
+        errorImage = null;
       }
     } catch (e) {
+      print(e);
 
-      this.requestStateCrud = Error(
-        error: "Erro ao fazer upload da imagem",
-      );
+      imageName = "Error ao selecionar essa imagem!";
     }
   }
 
   @action
   Future<void> save() async {
-    validateName(textEditingControllerName.text.trim());
-    validateAcronym(textEditingControllerAcronym.text.trim());
+    validatedAll(
+      textEditingControllerName.text,
+      textEditingControllerAcronym.text,
+      imageName,
+    );
 
+    if (validateAll) {
+      try {
+        requestStateSave = Loading();
 
+        await Future.delayed(Duration(seconds: 1));
+
+        _state = await _stateRepository.save(
+          form: _getState(
+            name: textEditingControllerName.text.trim(),
+            acronym: textEditingControllerAcronym.text.trim(),
+            fileInBase64: _fileInBase64,
+          ),
+        );
+
+        message = success_insert_message;
+
+        states.add(_state);
+
+        _clearFields();
+
+        requestStateSave = Completed();
+      } catch (e) {
+        this.requestStateSave = Error(
+          error: e.toString().replaceAll("Exception:", ""),
+        );
+      }
+    }
+  }
+
+  StateForm _getState({
+    @required String name,
+    @required String acronym,
+    @required String fileInBase64,
+  }) {
+    StateForm form = StateForm();
+    form.name = name;
+    form.acronym = acronym;
+    form.fileInBase64 = fileInBase64;
+
+    return form;
+  }
+
+  void _clearFields() {
+    textEditingControllerName.text = "";
+    textEditingControllerAcronym.text = "";
+    imageName = "";
   }
 }

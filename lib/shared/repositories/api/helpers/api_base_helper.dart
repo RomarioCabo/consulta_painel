@@ -19,19 +19,6 @@ class ApiBaseHelper {
     );
   }
 
-  Future<dynamic> postWithMultipartFile({
-    @required String url,
-    @required Uint8List multipartFile,
-    @required String queryParams,
-  }) async {
-    return await _request(
-      httpMethod: "POST",
-      url: url,
-      multipartFile: multipartFile,
-      queryParams: queryParams,
-    );
-  }
-
   Future<dynamic> put({
     @required String url,
     @required String body,
@@ -42,19 +29,6 @@ class ApiBaseHelper {
       url: url,
       pathVariable: pathVariable,
       body: body,
-    );
-  }
-
-  Future<dynamic> putWithMultipartFile({
-    @required String url,
-    @required Uint8List multipartFile,
-    @required String queryParams,
-  }) async {
-    return await _request(
-      httpMethod: "PUT",
-      url: url,
-      multipartFile: multipartFile,
-      queryParams: queryParams,
     );
   }
 
@@ -88,12 +62,13 @@ class ApiBaseHelper {
     String body,
     String queryParams,
     String pathVariable,
-    Uint8List multipartFile,
   }) async {
     dynamic responseJson;
 
     try {
-      var headers = {'Content-Type': 'application/json'};
+      var headers;
+
+      headers = {'Content-Type': 'application/json'};
 
       queryParams = queryParams == null ? "" : "?$queryParams";
       pathVariable = pathVariable == null ? "" : "/$pathVariable";
@@ -102,20 +77,11 @@ class ApiBaseHelper {
         print("$base_url$url$queryParams$pathVariable");
       }
 
-      var request = _getTypeRequest(
-        httpMethod,
-        multipartFile,
-        url,
-        queryParams,
-        pathVariable,
-      );
+      var request = http.Request(
+          httpMethod, Uri.parse("$base_url$url$queryParams$pathVariable"));
 
       if (body != null) {
         request.body = body;
-      }
-
-      if (multipartFile != null) {
-        request.files.add(http.MultipartFile.fromBytes('file', multipartFile));
       }
 
       request.headers.addAll(headers);
@@ -171,22 +137,6 @@ class ApiBaseHelper {
           response.statusCode,
           error["menssagem"],
         );
-    }
-  }
-
-  _getTypeRequest(
-    String httpMethod,
-    Uint8List pathMultipartFile,
-    String url,
-    String queryParams,
-    String pathVariable,
-  ) {
-    if (pathMultipartFile == null) {
-      return http.Request(
-          httpMethod, Uri.parse("$base_url$url$queryParams$pathVariable"));
-    } else {
-      return http.MultipartRequest(
-          httpMethod, Uri.parse("$base_url$url$queryParams$pathVariable"));
     }
   }
 }

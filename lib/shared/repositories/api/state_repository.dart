@@ -11,15 +11,11 @@ class StateRepository {
 
   Future<StateDto> save({
     @required StateForm form,
-    @required Uint8List multipartFile,
   }) async {
     try {
-      String queryParams = "acronym=${form.acronym}&name=${form.name}";
-
-      final response = await _helper.postWithMultipartFile(
+      final response = await _helper.post(
         url: 'state/save',
-        multipartFile: multipartFile,
-        queryParams: queryParams,
+        body: form.toJson(),
       );
 
       return StateDto.fromJson(response);
@@ -31,16 +27,12 @@ class StateRepository {
   Future<StateDto> put({
     @required int id,
     @required StateForm form,
-    @required Uint8List multipartFile,
   }) async {
     try {
-      String queryParams =
-          "idState=$id&acronym=${form.acronym}&name=${form.name}";
-
-      final response = await _helper.putWithMultipartFile(
+      final response = await _helper.put(
         url: 'state/update',
-        multipartFile: multipartFile,
-        queryParams: queryParams,
+        body: form.toJson(),
+        pathVariable: id.toString(),
       );
 
       return StateDto.fromJson(response);

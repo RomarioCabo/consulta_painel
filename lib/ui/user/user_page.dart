@@ -129,8 +129,8 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
           children: [
             _buildTextFieldName(),
             _buildTextFieldEMail(),
-            _widgetChangePassword(),
-            _buildButtonSave(),
+            _buildRowChangePassword(),
+            _buildRowButtons(),
             _buildTitleTable(),
             _buildContentTable(),
           ],
@@ -177,7 +177,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _widgetChangePassword() {
+  Widget _buildRowChangePassword() {
     return Container(
       margin: EdgeInsets.only(top: 12),
       child: Row(
@@ -232,7 +232,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildButtonSave() {
+  Widget _buildRowButtons() {
     return Container(
       margin: EdgeInsets.only(top: 16),
       child: Row(
