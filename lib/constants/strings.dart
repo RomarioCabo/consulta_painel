@@ -54,11 +54,25 @@ const String label_table_column_email = "E-MAIL";
 const String label_table_column_actions = "AÇÕES";
 
 /// Tela cadastro de Estado
-const String label_text_field_name_state = "Nome do estado";
-const String label_text_field_acronym_state = "Sigla do estado";
-const String label_text_field_path_image = "Diretório da imagem selecionada";
 const String label_button_select_image = "Selecionar Imagem";
 const String tooltip_text_select_image = "Escolha uma imagem da bandeira para o estado";
+
+const String text_field_path_image = "Diretório da imagem selecionada";
+const String text_field_acronym_state = "Sigla do estado";
+const String text_field_name_state = "Nome do estado";
+const String text_field_capital = "Capital";
+const String text_field_gentle = "Gentílico";
+const String text_field_territorial_area = "Área territorial";
+const String text_field_total_counties = "Número de municípios";
+const String text_field_total_population = "População";
+const String text_field_demographic_density = "Densidade demográfica";
+const String text_field_idh = "Índice de Desenvolvimento Humano (IDH)";
+const String text_field_bordering_territory = "Territórios limítrofes";
+const String text_field_pib = "Produto Interno Bruto (PIB)";
+const String text_field_natural_aspects = "Aspectos naturais";
+const String text_field_economic_activities = "Atividades econômicas";
+const String text_field_curiosity = "Curiosidade";
+const String text_field_Region = "Região";
 
 const String label_table_column_cod_state = "COD";
 const String label_table_column_name_state = "NOME";

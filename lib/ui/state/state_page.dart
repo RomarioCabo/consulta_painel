@@ -149,15 +149,16 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         contentChild: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildRowState(),
+            _buildRowNameAndAcronym(),
             CustomTextFieldIcon(
-              labelText: label_text_field_path_image,
+              labelText: text_field_path_image,
               labelTextContent: _stateController.imageName,
               labelTextError: _stateController.errorImage,
               onTap: () {
                 _stateController.getImage();
               },
             ),
+            _buildRowCapitalAndGentle(),
             _buildRowButtons(),
             _buildTitleTable(),
             _buildContentTable(),
@@ -167,7 +168,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildRowState() {
+  Widget _buildRowNameAndAcronym() {
     return Container(
       margin: EdgeInsets.only(top: 12),
       child: Row(
@@ -183,11 +184,27 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildRowCapitalAndGentle() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildTextFieldCapital(),
+          ),
+          Expanded(
+            child: _buildTextFieldGentle(),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildTextFieldName() {
     return Container(
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
-        labelText: label_text_field_name_state,
+        labelText: text_field_name_state,
         textEditingController: _stateController.textEditingControllerName,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.none,
@@ -206,12 +223,54 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
   Widget _buildTextFieldAcronym() {
     return Container(
       child: CustomTextFormField(
-        labelText: label_text_field_acronym_state,
+        labelText: text_field_acronym_state,
         textEditingController: _stateController.textEditingControllerAcronym,
-        textInputAction: TextInputAction.done,
+        textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
         focusNode: _stateController.focusNodeAcronym,
-        onFieldSubmitted: null,
+        onFieldSubmitted: (String value) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeCapital);
+        },
+        onChanged: _stateController.validateAcronym,
+        errorText: _stateController.errorAcronym,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldCapital() {
+    return Container(
+      margin: EdgeInsets.only(right: 12),
+      child: CustomTextFormField(
+        labelText: text_field_capital,
+        textEditingController: _stateController.textEditingControllerCapital,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeCapital,
+        onFieldSubmitted: (String value) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeCapital);
+        },
+        onChanged: _stateController.validateAcronym,
+        errorText: _stateController.errorAcronym,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldGentle() {
+    return Container(
+      child: CustomTextFormField(
+        labelText: text_field_gentle,
+        textEditingController: _stateController.textEditingControllerGentle,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeGentle,
+        onFieldSubmitted: (String value) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeCapital);
+        },
         onChanged: _stateController.validateAcronym,
         errorText: _stateController.errorAcronym,
         enabled: !(_enableTextFields()),

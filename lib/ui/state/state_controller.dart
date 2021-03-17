@@ -15,9 +15,35 @@ class StateController = StateControllerBase with _$StateController;
 abstract class StateControllerBase with Store {
   TextEditingController textEditingControllerName = TextEditingController();
   TextEditingController textEditingControllerAcronym = TextEditingController();
+  TextEditingController textEditingControllerCapital = TextEditingController();
+  TextEditingController textEditingControllerGentle = TextEditingController();
+  TextEditingController textEditingControllerTerritorialArea = TextEditingController();
+  TextEditingController textEditingControllerTotalCounties = TextEditingController();
+  TextEditingController textEditingControllerTotalPopulation = TextEditingController();
+  TextEditingController textEditingControllerDemographicDensity = TextEditingController();
+  TextEditingController textEditingControllerIdh = TextEditingController();
+  TextEditingController textEditingControllerBorderingTerritory = TextEditingController();
+  TextEditingController textEditingControllerPib = TextEditingController();
+  TextEditingController textEditingControllerNaturalAspects = TextEditingController();
+  TextEditingController textEditingControllerEconomicActivities = TextEditingController();
+  TextEditingController textEditingControllerCuriosity = TextEditingController();
+  TextEditingController textEditingControllerRegion = TextEditingController();
 
   FocusNode focusNodeName = FocusNode();
   FocusNode focusNodeAcronym = FocusNode();
+  FocusNode focusNodeCapital = FocusNode();
+  FocusNode focusNodeGentle = FocusNode();
+  FocusNode focusNodeTerritorialArea = FocusNode();
+  FocusNode focusNodeTotalCounties = FocusNode();
+  FocusNode focusNodeTotalPopulation = FocusNode();
+  FocusNode focusNodeDemographicDensity = FocusNode();
+  FocusNode focusNodeIdh = FocusNode();
+  FocusNode focusNodeBorderingTerritory = FocusNode();
+  FocusNode focusNodePib = FocusNode();
+  FocusNode focusNodeNaturalAspects = FocusNode();
+  FocusNode focusNodeEconomicActivities = FocusNode();
+  FocusNode focusNodeCuriosity = FocusNode();
+  FocusNode focusNodeRegion = FocusNode();
 
   @observable
   RequestState requestStateInitial = Initial();
