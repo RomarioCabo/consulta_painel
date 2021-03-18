@@ -72,7 +72,7 @@ const String text_field_pib = "Produto Interno Bruto (PIB)";
 const String text_field_natural_aspects = "Aspectos naturais";
 const String text_field_economic_activities = "Atividades econômicas";
 const String text_field_curiosity = "Curiosidade";
-const String text_field_Region = "Região";
+const String text_field_region = "Região";
 
 const String label_table_column_cod_state = "COD";
 const String label_table_column_name_state = "NOME";

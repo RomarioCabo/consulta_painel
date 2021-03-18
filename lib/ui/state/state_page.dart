@@ -26,6 +26,8 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> _opacity;
 
+  ScrollController _scrollController;
+
   /// Reactions
   final List<ReactionDisposer> _disposers = [];
 
@@ -48,6 +50,8 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         ),
       ),
     );
+
+    _scrollController = ScrollController();
 
     _stateController = StateController();
     _stateController.getAllStates();
@@ -123,7 +127,13 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
-        body: _bodyContent(),
+        body: SafeArea(
+          child: Scrollbar(
+            isAlwaysShown: true,
+            controller: _scrollController,
+            child: _bodyContent(),
+          ),
+        ),
       ),
     );
   }
@@ -141,28 +151,35 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
   }
 
   Widget _buildFields() {
-    return Container(
-      margin: EdgeInsets.all(32),
-      child: CustomAnimatedBuilder(
-        animationController: _animationController,
-        opacity: _opacity,
-        contentChild: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildRowNameAndAcronym(),
-            CustomTextFieldIcon(
-              labelText: text_field_path_image,
-              labelTextContent: _stateController.imageName,
-              labelTextError: _stateController.errorImage,
-              onTap: () {
-                _stateController.getImage();
-              },
-            ),
-            _buildRowCapitalAndGentle(),
-            _buildRowButtons(),
-            _buildTitleTable(),
-            _buildContentTable(),
-          ],
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.all(32),
+        child: CustomAnimatedBuilder(
+          animationController: _animationController,
+          opacity: _opacity,
+          contentChild: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildRowNameAndAcronym(),
+              _buildRowCapitalAndGentle(),
+              _buildRowTerritorialAreaAndTotalCounties(),
+              _buildRowTotalPopulationAndDemographicDensity(),
+              _buildRowIdhAndBorderingTerritory(),
+              _buildRowPibAndNaturalAspects(),
+              _buildRowEconomicActivitiesAndRegion(),
+              CustomTextFieldIcon(
+                labelText: text_field_path_image,
+                labelTextContent: _stateController.imageName,
+                labelTextError: _stateController.errorImage,
+                onTap: () {
+                  _stateController.getImage();
+                },
+              ),
+              _buildRowButtons(),
+              _buildTitleTable(),
+              _buildContentTable(),
+            ],
+          ),
         ),
       ),
     );
@@ -184,16 +201,80 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildRowCapitalAndGentle() {
+  Widget _buildRowTerritorialAreaAndTotalCounties() {
     return Container(
       margin: EdgeInsets.only(top: 12),
       child: Row(
         children: [
           Expanded(
-            child: _buildTextFieldCapital(),
+            child: _buildTextFieldTerritorialArea(),
           ),
           Expanded(
-            child: _buildTextFieldGentle(),
+            child: _buildTextFieldTotalCounties(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRowTotalPopulationAndDemographicDensity() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildTextFieldTotalPopulation(),
+          ),
+          Expanded(
+            child: _buildTextFieldDemographicDensity(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRowIdhAndBorderingTerritory() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildTextFieldIdh(),
+          ),
+          Expanded(
+            child: _buildTextFieldBorderingTerritory(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRowPibAndNaturalAspects() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildTextFieldPib(),
+          ),
+          Expanded(
+            child: _buildTextFieldNaturalAspects(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRowEconomicActivitiesAndRegion() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildTextFieldEconomicActivities(),
+          ),
+          Expanded(
+            child: _buildTextFieldRegion(),
           ),
         ],
       ),
@@ -209,7 +290,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.none,
         focusNode: _stateController.focusNodeName,
-        onFieldSubmitted: (String value) {
+        onFieldSubmitted: (_) {
           FocusScope.of(context)
               .requestFocus(_stateController.focusNodeAcronym);
         },
@@ -228,13 +309,29 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
         focusNode: _stateController.focusNodeAcronym,
-        onFieldSubmitted: (String value) {
+        onFieldSubmitted: (_) {
           FocusScope.of(context)
               .requestFocus(_stateController.focusNodeCapital);
         },
         onChanged: _stateController.validateAcronym,
         errorText: _stateController.errorAcronym,
         enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildRowCapitalAndGentle() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildTextFieldCapital(),
+          ),
+          Expanded(
+            child: _buildTextFieldGentle(),
+          ),
+        ],
       ),
     );
   }
@@ -248,12 +345,11 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
         focusNode: _stateController.focusNodeCapital,
-        onFieldSubmitted: (String value) {
-          FocusScope.of(context)
-              .requestFocus(_stateController.focusNodeCapital);
+        onFieldSubmitted: (_) {
+          FocusScope.of(context).requestFocus(_stateController.focusNodeGentle);
         },
-        onChanged: _stateController.validateAcronym,
-        errorText: _stateController.errorAcronym,
+        onChanged: _stateController.validateCapital,
+        errorText: _stateController.errorCapital,
         enabled: !(_enableTextFields()),
       ),
     );
@@ -267,12 +363,211 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
         focusNode: _stateController.focusNodeGentle,
-        onFieldSubmitted: (String value) {
+        onFieldSubmitted: (_) {
           FocusScope.of(context)
-              .requestFocus(_stateController.focusNodeCapital);
+              .requestFocus(_stateController.focusNodeTerritorialArea);
         },
-        onChanged: _stateController.validateAcronym,
-        errorText: _stateController.errorAcronym,
+        onChanged: _stateController.validateGentle,
+        errorText: _stateController.errorGentle,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldTerritorialArea() {
+    return Container(
+      margin: EdgeInsets.only(right: 12),
+      child: CustomTextFormField(
+        labelText: text_field_territorial_area,
+        textEditingController:
+            _stateController.textEditingControllerTerritorialArea,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeTerritorialArea,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeTotalCounties);
+        },
+        onChanged: _stateController.validateTerritorialArea,
+        errorText: _stateController.errorTerritorialArea,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldTotalCounties() {
+    return Container(
+      child: CustomTextFormField(
+        labelText: text_field_total_counties,
+        textEditingController:
+            _stateController.textEditingControllerTotalCounties,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeTotalCounties,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeTotalPopulation);
+        },
+        onChanged: _stateController.validateTotalCounties,
+        errorText: _stateController.errorTotalCounties,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldTotalPopulation() {
+    return Container(
+      margin: EdgeInsets.only(right: 12),
+      child: CustomTextFormField(
+        labelText: text_field_total_population,
+        textEditingController:
+            _stateController.textEditingControllerTotalPopulation,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeTotalPopulation,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeDemographicDensity);
+        },
+        onChanged: _stateController.validateTotalPopulation,
+        errorText: _stateController.errorTotalPopulation,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldDemographicDensity() {
+    return Container(
+      child: CustomTextFormField(
+        labelText: text_field_demographic_density,
+        textEditingController:
+            _stateController.textEditingControllerDemographicDensity,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeDemographicDensity,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context).requestFocus(_stateController.focusNodeIdh);
+        },
+        onChanged: _stateController.validateDemographicDensity,
+        errorText: _stateController.errorDemographicDensity,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldIdh() {
+    return Container(
+      margin: EdgeInsets.only(right: 12),
+      child: CustomTextFormField(
+        labelText: text_field_idh,
+        textEditingController: _stateController.textEditingControllerIdh,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeIdh,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeBorderingTerritory);
+        },
+        onChanged: _stateController.validateIdh,
+        errorText: _stateController.errorIdh,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldBorderingTerritory() {
+    return Container(
+      child: CustomTextFormField(
+        labelText: text_field_bordering_territory,
+        textEditingController:
+            _stateController.textEditingControllerBorderingTerritory,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeBorderingTerritory,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context).requestFocus(_stateController.focusNodePib);
+        },
+        onChanged: _stateController.validateBorderingTerritory,
+        errorText: _stateController.errorBorderingTerritory,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldPib() {
+    return Container(
+      margin: EdgeInsets.only(right: 12),
+      child: CustomTextFormField(
+        labelText: text_field_pib,
+        textEditingController: _stateController.textEditingControllerPib,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodePib,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeNaturalAspects);
+        },
+        onChanged: _stateController.validatePib,
+        errorText: _stateController.errorPib,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldNaturalAspects() {
+    return Container(
+      child: CustomTextFormField(
+        labelText: text_field_natural_aspects,
+        textEditingController:
+            _stateController.textEditingControllerNaturalAspects,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeNaturalAspects,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeEconomicActivities);
+        },
+        onChanged: _stateController.validateNaturalAspects,
+        errorText: _stateController.errorNaturalAspects,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldEconomicActivities() {
+    return Container(
+      margin: EdgeInsets.only(right: 12),
+      child: CustomTextFormField(
+        labelText: text_field_economic_activities,
+        textEditingController:
+            _stateController.textEditingControllerEconomicActivities,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeEconomicActivities,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context).requestFocus(_stateController.focusNodeRegion);
+        },
+        onChanged: _stateController.validateEconomicActivities,
+        errorText: _stateController.errorEconomicActivities,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldRegion() {
+    return Container(
+      child: CustomTextFormField(
+        labelText: text_field_region,
+        textEditingController: _stateController.textEditingControllerRegion,
+        textInputAction: TextInputAction.next,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeRegion,
+        onFieldSubmitted: (_) {
+          FocusScope.of(context)
+              .requestFocus(_stateController.focusNodeCuriosity);
+        },
+        onChanged: _stateController.validateRegion,
+        errorText: _stateController.errorRegion,
         enabled: !(_enableTextFields()),
       ),
     );
@@ -408,7 +703,8 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     if (_stateController.states == null) {
       return Container();
     } else {
-      return Expanded(
+      return Container(
+        height: 600,
         child: ListView.builder(
           itemCount: _stateController.states.length,
           itemBuilder: (context, index) {

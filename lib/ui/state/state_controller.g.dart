@@ -102,6 +102,198 @@ mixin _$StateController on StateControllerBase, Store {
     });
   }
 
+  final _$errorCapitalAtom = Atom(name: 'StateControllerBase.errorCapital');
+
+  @override
+  String get errorCapital {
+    _$errorCapitalAtom.reportRead();
+    return super.errorCapital;
+  }
+
+  @override
+  set errorCapital(String value) {
+    _$errorCapitalAtom.reportWrite(value, super.errorCapital, () {
+      super.errorCapital = value;
+    });
+  }
+
+  final _$errorGentleAtom = Atom(name: 'StateControllerBase.errorGentle');
+
+  @override
+  String get errorGentle {
+    _$errorGentleAtom.reportRead();
+    return super.errorGentle;
+  }
+
+  @override
+  set errorGentle(String value) {
+    _$errorGentleAtom.reportWrite(value, super.errorGentle, () {
+      super.errorGentle = value;
+    });
+  }
+
+  final _$errorTerritorialAreaAtom =
+      Atom(name: 'StateControllerBase.errorTerritorialArea');
+
+  @override
+  String get errorTerritorialArea {
+    _$errorTerritorialAreaAtom.reportRead();
+    return super.errorTerritorialArea;
+  }
+
+  @override
+  set errorTerritorialArea(String value) {
+    _$errorTerritorialAreaAtom.reportWrite(value, super.errorTerritorialArea,
+        () {
+      super.errorTerritorialArea = value;
+    });
+  }
+
+  final _$errorTotalCountiesAtom =
+      Atom(name: 'StateControllerBase.errorTotalCounties');
+
+  @override
+  String get errorTotalCounties {
+    _$errorTotalCountiesAtom.reportRead();
+    return super.errorTotalCounties;
+  }
+
+  @override
+  set errorTotalCounties(String value) {
+    _$errorTotalCountiesAtom.reportWrite(value, super.errorTotalCounties, () {
+      super.errorTotalCounties = value;
+    });
+  }
+
+  final _$errorTotalPopulationAtom =
+      Atom(name: 'StateControllerBase.errorTotalPopulation');
+
+  @override
+  String get errorTotalPopulation {
+    _$errorTotalPopulationAtom.reportRead();
+    return super.errorTotalPopulation;
+  }
+
+  @override
+  set errorTotalPopulation(String value) {
+    _$errorTotalPopulationAtom.reportWrite(value, super.errorTotalPopulation,
+        () {
+      super.errorTotalPopulation = value;
+    });
+  }
+
+  final _$errorDemographicDensityAtom =
+      Atom(name: 'StateControllerBase.errorDemographicDensity');
+
+  @override
+  String get errorDemographicDensity {
+    _$errorDemographicDensityAtom.reportRead();
+    return super.errorDemographicDensity;
+  }
+
+  @override
+  set errorDemographicDensity(String value) {
+    _$errorDemographicDensityAtom
+        .reportWrite(value, super.errorDemographicDensity, () {
+      super.errorDemographicDensity = value;
+    });
+  }
+
+  final _$errorIdhAtom = Atom(name: 'StateControllerBase.errorIdh');
+
+  @override
+  String get errorIdh {
+    _$errorIdhAtom.reportRead();
+    return super.errorIdh;
+  }
+
+  @override
+  set errorIdh(String value) {
+    _$errorIdhAtom.reportWrite(value, super.errorIdh, () {
+      super.errorIdh = value;
+    });
+  }
+
+  final _$errorBorderingTerritoryAtom =
+      Atom(name: 'StateControllerBase.errorBorderingTerritory');
+
+  @override
+  String get errorBorderingTerritory {
+    _$errorBorderingTerritoryAtom.reportRead();
+    return super.errorBorderingTerritory;
+  }
+
+  @override
+  set errorBorderingTerritory(String value) {
+    _$errorBorderingTerritoryAtom
+        .reportWrite(value, super.errorBorderingTerritory, () {
+      super.errorBorderingTerritory = value;
+    });
+  }
+
+  final _$errorPibAtom = Atom(name: 'StateControllerBase.errorPib');
+
+  @override
+  String get errorPib {
+    _$errorPibAtom.reportRead();
+    return super.errorPib;
+  }
+
+  @override
+  set errorPib(String value) {
+    _$errorPibAtom.reportWrite(value, super.errorPib, () {
+      super.errorPib = value;
+    });
+  }
+
+  final _$errorNaturalAspectsAtom =
+      Atom(name: 'StateControllerBase.errorNaturalAspects');
+
+  @override
+  String get errorNaturalAspects {
+    _$errorNaturalAspectsAtom.reportRead();
+    return super.errorNaturalAspects;
+  }
+
+  @override
+  set errorNaturalAspects(String value) {
+    _$errorNaturalAspectsAtom.reportWrite(value, super.errorNaturalAspects, () {
+      super.errorNaturalAspects = value;
+    });
+  }
+
+  final _$errorEconomicActivitiesAtom =
+      Atom(name: 'StateControllerBase.errorEconomicActivities');
+
+  @override
+  String get errorEconomicActivities {
+    _$errorEconomicActivitiesAtom.reportRead();
+    return super.errorEconomicActivities;
+  }
+
+  @override
+  set errorEconomicActivities(String value) {
+    _$errorEconomicActivitiesAtom
+        .reportWrite(value, super.errorEconomicActivities, () {
+      super.errorEconomicActivities = value;
+    });
+  }
+
+  final _$errorRegionAtom = Atom(name: 'StateControllerBase.errorRegion');
+
+  @override
+  String get errorRegion {
+    _$errorRegionAtom.reportRead();
+    return super.errorRegion;
+  }
+
+  @override
+  set errorRegion(String value) {
+    _$errorRegionAtom.reportWrite(value, super.errorRegion, () {
+      super.errorRegion = value;
+    });
+  }
+
   final _$validateAllAtom = Atom(name: 'StateControllerBase.validateAll');
 
   @override
@@ -221,11 +413,173 @@ mixin _$StateController on StateControllerBase, Store {
   }
 
   @override
-  void validatedAll(String name, String acronym, String image) {
+  void validateCapital(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateCapital');
+    try {
+      return super.validateCapital(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateGentle(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateGentle');
+    try {
+      return super.validateGentle(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateTerritorialArea(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateTerritorialArea');
+    try {
+      return super.validateTerritorialArea(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateTotalCounties(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateTotalCounties');
+    try {
+      return super.validateTotalCounties(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateTotalPopulation(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateTotalPopulation');
+    try {
+      return super.validateTotalPopulation(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateDemographicDensity(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateDemographicDensity');
+    try {
+      return super.validateDemographicDensity(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateIdh(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateIdh');
+    try {
+      return super.validateIdh(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateBorderingTerritory(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateBorderingTerritory');
+    try {
+      return super.validateBorderingTerritory(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validatePib(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validatePib');
+    try {
+      return super.validatePib(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateNaturalAspects(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateNaturalAspects');
+    try {
+      return super.validateNaturalAspects(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateEconomicActivities(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateEconomicActivities');
+    try {
+      return super.validateEconomicActivities(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateRegion(String value) {
+    final _$actionInfo = _$StateControllerBaseActionController.startAction(
+        name: 'StateControllerBase.validateRegion');
+    try {
+      return super.validateRegion(value);
+    } finally {
+      _$StateControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validatedAll(
+      {@required String name,
+      @required String acronym,
+      @required String image,
+      @required String capital,
+      @required String gentle,
+      @required String territorialArea,
+      @required String totalCounties,
+      @required String totalPopulation,
+      @required String demographicDensity,
+      @required String idh,
+      @required String borderingTerritory,
+      @required String pib,
+      @required String naturalAspects,
+      @required String economicActivities,
+      @required String region}) {
     final _$actionInfo = _$StateControllerBaseActionController.startAction(
         name: 'StateControllerBase.validatedAll');
     try {
-      return super.validatedAll(name, acronym, image);
+      return super.validatedAll(
+          name: name,
+          acronym: acronym,
+          image: image,
+          capital: capital,
+          gentle: gentle,
+          territorialArea: territorialArea,
+          totalCounties: totalCounties,
+          totalPopulation: totalPopulation,
+          demographicDensity: demographicDensity,
+          idh: idh,
+          borderingTerritory: borderingTerritory,
+          pib: pib,
+          naturalAspects: naturalAspects,
+          economicActivities: economicActivities,
+          region: region);
     } finally {
       _$StateControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -240,6 +594,18 @@ requestStateUpdate: ${requestStateUpdate},
 errorName: ${errorName},
 errorAcronym: ${errorAcronym},
 errorImage: ${errorImage},
+errorCapital: ${errorCapital},
+errorGentle: ${errorGentle},
+errorTerritorialArea: ${errorTerritorialArea},
+errorTotalCounties: ${errorTotalCounties},
+errorTotalPopulation: ${errorTotalPopulation},
+errorDemographicDensity: ${errorDemographicDensity},
+errorIdh: ${errorIdh},
+errorBorderingTerritory: ${errorBorderingTerritory},
+errorPib: ${errorPib},
+errorNaturalAspects: ${errorNaturalAspects},
+errorEconomicActivities: ${errorEconomicActivities},
+errorRegion: ${errorRegion},
 validateAll: ${validateAll},
 message: ${message},
 imageName: ${imageName},
