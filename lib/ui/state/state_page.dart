@@ -130,7 +130,6 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
         body: SafeArea(
           child: Scrollbar(
             isAlwaysShown: true,
-            controller: _scrollController,
             child: _bodyContent(),
           ),
         ),
@@ -167,6 +166,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
               _buildRowIdhAndBorderingTerritory(),
               _buildRowPibAndNaturalAspects(),
               _buildRowEconomicActivitiesAndRegion(),
+              _buildTextFieldCuriosity(),
               CustomTextFieldIcon(
                 labelText: text_field_path_image,
                 labelTextContent: _stateController.imageName,
@@ -573,6 +573,24 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildTextFieldCuriosity() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: CustomTextFormField(
+        labelText: text_field_curiosity,
+        maxLines: 8,
+        textEditingController: _stateController.textEditingControllerCuriosity,
+        textInputAction: TextInputAction.done,
+        textCapitalization: TextCapitalization.characters,
+        focusNode: _stateController.focusNodeCuriosity,
+        onFieldSubmitted: (_) {},
+        onChanged: (_) {},
+        errorText: null,
+        enabled: !(_enableTextFields()),
+      ),
+    );
+  }
+
   bool _enableTextFields() {
     return _stateController.requestStateSave is Loading ||
         _stateController.requestStateUpdate is Loading;
@@ -704,7 +722,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       return Container();
     } else {
       return Container(
-        height: 600,
+        height: 400,
         child: ListView.builder(
           itemCount: _stateController.states.length,
           itemBuilder: (context, index) {
