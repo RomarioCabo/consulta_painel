@@ -74,6 +74,21 @@ const String text_field_economic_activities = "Atividades econômicas";
 const String text_field_curiosity = "Curiosidade";
 const String text_field_region = "Região";
 
+const String hint_text_field_name = "Ex: Ceará";
+const String hint_text_field_acronym = "Ex: CE";
+const String hint_text_field_capital = "Ex: Fortaleza";
+const String hint_text_field_gentle = "Ex: Cearense";
+const String hint_text_field_territorial_area = "Ex: 149894";
+const String hint_text_field_total_counties = "Ex: 184";
+const String hint_text_field_total_population = "Ex: 9075649";
+const String hint_text_field_demographic_density = "Ex: 56.76";
+const String hint_text_field_idh = "Ex: 0.735";
+const String hint_text_field_bordering_territory = "Ex: Piauí, Rio Grande do Norte, Paraíba e Pernambuco";
+const String hint_text_field_pib = "Ex: 138.379";
+const String hint_text_field_natural_aspects = "Ex: Clima — semiárido e tropical; Relevo — chapadas e cuestas; Vegetação — domínio da Caatinga.";
+const String hint_text_field_economic_activities = "Ex: Predomínio de atividade do setor terciário (comércio e serviços) e grande destaque para o turismo.";
+const String hint_text_field_region = "Ex: Nordeste";
+
 const String label_table_column_cod_state = "COD";
 const String label_table_column_name_state = "NOME";
 const String label_table_column_acronym_state = "SIGLA";

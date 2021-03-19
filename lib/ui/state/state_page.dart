@@ -26,7 +26,10 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> _opacity;
 
-  ScrollController _scrollController;
+  ScrollController _scrollControllerPrincipal;
+  ScrollController _scrollControllerListView;
+
+  double offset = 0.0;
 
   /// Reactions
   final List<ReactionDisposer> _disposers = [];
@@ -51,7 +54,8 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       ),
     );
 
-    _scrollController = ScrollController();
+    _scrollControllerPrincipal = ScrollController();
+    _scrollControllerListView = ScrollController();
 
     _stateController = StateController();
     _stateController.getAllStates();
@@ -81,6 +85,8 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _scrollControllerPrincipal.dispose();
+    _scrollControllerListView.dispose();
     _disposers.forEach((disposer) => disposer());
     _animationController.dispose();
     super.dispose();
@@ -128,10 +134,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
         body: SafeArea(
-          child: Scrollbar(
-            isAlwaysShown: true,
-            child: _bodyContent(),
-          ),
+          child: _bodyContent(),
         ),
       ),
     );
@@ -150,35 +153,40 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
   }
 
   Widget _buildFields() {
-    return SingleChildScrollView(
-      child: Container(
-        margin: EdgeInsets.all(32),
-        child: CustomAnimatedBuilder(
-          animationController: _animationController,
-          opacity: _opacity,
-          contentChild: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildRowNameAndAcronym(),
-              _buildRowCapitalAndGentle(),
-              _buildRowTerritorialAreaAndTotalCounties(),
-              _buildRowTotalPopulationAndDemographicDensity(),
-              _buildRowIdhAndBorderingTerritory(),
-              _buildRowPibAndNaturalAspects(),
-              _buildRowEconomicActivitiesAndRegion(),
-              _buildTextFieldCuriosity(),
-              CustomTextFieldIcon(
-                labelText: text_field_path_image,
-                labelTextContent: _stateController.imageName,
-                labelTextError: _stateController.errorImage,
-                onTap: () {
-                  _stateController.getImage();
-                },
-              ),
-              _buildRowButtons(),
-              _buildTitleTable(),
-              _buildContentTable(),
-            ],
+    return Scrollbar(
+      isAlwaysShown: true,
+      controller: _scrollControllerPrincipal,
+      child: SingleChildScrollView(
+        controller: _scrollControllerPrincipal,
+        child: Container(
+          margin: EdgeInsets.all(32),
+          child: CustomAnimatedBuilder(
+            animationController: _animationController,
+            opacity: _opacity,
+            contentChild: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildRowNameAndAcronym(),
+                _buildRowCapitalAndGentle(),
+                _buildRowTerritorialAreaAndTotalCounties(),
+                _buildRowTotalPopulationAndDemographicDensity(),
+                _buildRowIdhAndBorderingTerritory(),
+                _buildRowPibAndNaturalAspects(),
+                _buildRowEconomicActivitiesAndRegion(),
+                _buildTextFieldCuriosity(),
+                CustomTextFieldIcon(
+                  labelText: text_field_path_image,
+                  labelTextContent: _stateController.imageName,
+                  labelTextError: _stateController.errorImage,
+                  onTap: () {
+                    _stateController.getImage();
+                  },
+                ),
+                _buildRowButtons(),
+                _buildTitleTable(),
+                _buildContentTable(),
+              ],
+            ),
           ),
         ),
       ),
@@ -187,7 +195,6 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
 
   Widget _buildRowNameAndAcronym() {
     return Container(
-      margin: EdgeInsets.only(top: 12),
       child: Row(
         children: [
           Expanded(
@@ -286,6 +293,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
         labelText: text_field_name_state,
+        hintText: hint_text_field_name,
         textEditingController: _stateController.textEditingControllerName,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.none,
@@ -305,6 +313,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return Container(
       child: CustomTextFormField(
         labelText: text_field_acronym_state,
+        hintText: hint_text_field_acronym,
         textEditingController: _stateController.textEditingControllerAcronym,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
@@ -341,6 +350,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
         labelText: text_field_capital,
+        hintText: hint_text_field_capital,
         textEditingController: _stateController.textEditingControllerCapital,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
@@ -359,6 +369,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return Container(
       child: CustomTextFormField(
         labelText: text_field_gentle,
+        hintText: hint_text_field_gentle,
         textEditingController: _stateController.textEditingControllerGentle,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
@@ -379,6 +390,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
         labelText: text_field_territorial_area,
+        hintText: hint_text_field_territorial_area,
         textEditingController:
             _stateController.textEditingControllerTerritorialArea,
         textInputAction: TextInputAction.next,
@@ -399,6 +411,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return Container(
       child: CustomTextFormField(
         labelText: text_field_total_counties,
+        hintText: hint_text_field_total_counties,
         textEditingController:
             _stateController.textEditingControllerTotalCounties,
         textInputAction: TextInputAction.next,
@@ -420,6 +433,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
         labelText: text_field_total_population,
+        hintText: hint_text_field_total_population,
         textEditingController:
             _stateController.textEditingControllerTotalPopulation,
         textInputAction: TextInputAction.next,
@@ -440,6 +454,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return Container(
       child: CustomTextFormField(
         labelText: text_field_demographic_density,
+        hintText: hint_text_field_demographic_density,
         textEditingController:
             _stateController.textEditingControllerDemographicDensity,
         textInputAction: TextInputAction.next,
@@ -460,6 +475,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
         labelText: text_field_idh,
+        hintText: hint_text_field_idh,
         textEditingController: _stateController.textEditingControllerIdh,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
@@ -479,6 +495,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return Container(
       child: CustomTextFormField(
         labelText: text_field_bordering_territory,
+        hintText: hint_text_field_bordering_territory,
         textEditingController:
             _stateController.textEditingControllerBorderingTerritory,
         textInputAction: TextInputAction.next,
@@ -499,6 +516,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
         labelText: text_field_pib,
+        hintText: hint_text_field_pib,
         textEditingController: _stateController.textEditingControllerPib,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
@@ -518,6 +536,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return Container(
       child: CustomTextFormField(
         labelText: text_field_natural_aspects,
+        hintText: hint_text_field_natural_aspects,
         textEditingController:
             _stateController.textEditingControllerNaturalAspects,
         textInputAction: TextInputAction.next,
@@ -539,6 +558,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       margin: EdgeInsets.only(right: 12),
       child: CustomTextFormField(
         labelText: text_field_economic_activities,
+        hintText: hint_text_field_economic_activities,
         textEditingController:
             _stateController.textEditingControllerEconomicActivities,
         textInputAction: TextInputAction.next,
@@ -558,6 +578,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     return Container(
       child: CustomTextFormField(
         labelText: text_field_region,
+        hintText: hint_text_field_region,
         textEditingController: _stateController.textEditingControllerRegion,
         textInputAction: TextInputAction.next,
         textCapitalization: TextCapitalization.characters,
@@ -723,17 +744,22 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
     } else {
       return Container(
         height: 400,
-        child: ListView.builder(
-          itemCount: _stateController.states.length,
-          itemBuilder: (context, index) {
-            return ItemTileState(
-              item: _stateController.states[index],
-              onPressedEdit: () {},
-              onPressedDelete: () {
-                _openConfirmDialog(_stateController.states[index]);
-              },
-            );
-          },
+        child: Scrollbar(
+          isAlwaysShown: true,
+          controller: _scrollControllerListView,
+          child: ListView.builder(
+            controller: _scrollControllerListView,
+            itemCount: _stateController.states.length,
+            itemBuilder: (context, index) {
+              return ItemTileState(
+                item: _stateController.states[index],
+                onPressedEdit: () {},
+                onPressedDelete: () {
+                  _openConfirmDialog(_stateController.states[index]);
+                },
+              );
+            },
+          ),
         ),
       );
     }

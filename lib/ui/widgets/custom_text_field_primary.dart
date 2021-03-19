@@ -18,6 +18,7 @@ class CustomTextFormField extends StatefulWidget {
   final bool small;
   final double width;
   final bool containsTextInputFormatter;
+  final String hintText;
 
   CustomTextFormField({
     this.labelText,
@@ -35,6 +36,7 @@ class CustomTextFormField extends StatefulWidget {
     this.small = false,
     this.width,
     this.containsTextInputFormatter = false,
+    this.hintText = "",
   });
 
   @override
@@ -144,13 +146,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                         });
                       },
                     ),
+              hintText: widget.hintText,
             ),
             autovalidateMode: AutovalidateMode.disabled,
             style: Theme.of(context).textTheme.bodyText2,
             obscureText: widget.password && _obscurePassword,
             controller: widget.textEditingController,
             onFieldSubmitted: widget.onFieldSubmitted,
-            //validator: widget.validator,
             textCapitalization: widget.textCapitalization,
             keyboardType: widget.keyboardType,
             textInputAction: widget.textInputAction,
