@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.3         #compatibility ANDROID IOS LINUX MACOS WEB
   image_picker_web: any
   mime_type: ^1.0.0                  #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
+  flutter_masked_text: ^0.8.0        #compatibility ANDROID IOS LINUX MACOS WEB WINDOWS
 
 dev_dependencies:
   mobx_codegen:

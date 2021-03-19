@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 import 'package:mobx/mobx.dart';
@@ -25,7 +26,11 @@ abstract class StateControllerBase with Store {
       TextEditingController();
   TextEditingController textEditingControllerDemographicDensity =
       TextEditingController();
-  TextEditingController textEditingControllerIdh = TextEditingController();
+  TextEditingController textEditingControllerIdh = MoneyMaskedTextController(
+    precision: 3,
+    decimalSeparator: ".",
+    thousandSeparator: "",
+  );
   TextEditingController textEditingControllerBorderingTerritory =
       TextEditingController();
   TextEditingController textEditingControllerPib = TextEditingController();
@@ -391,12 +396,15 @@ abstract class StateControllerBase with Store {
             territorialArea: textEditingControllerTerritorialArea.text.trim(),
             totalCounties: textEditingControllerTotalCounties.text.trim(),
             totalPopulation: textEditingControllerTotalPopulation.text.trim(),
-            demographicDensity: textEditingControllerDemographicDensity.text.trim(),
+            demographicDensity:
+                textEditingControllerDemographicDensity.text.trim(),
             idh: textEditingControllerIdh.text.trim(),
-            borderingTerritory: textEditingControllerBorderingTerritory.text.trim(),
+            borderingTerritory:
+                textEditingControllerBorderingTerritory.text.trim(),
             pib: textEditingControllerPib.text.trim(),
             naturalAspects: textEditingControllerNaturalAspects.text.trim(),
-            economicActivities: textEditingControllerEconomicActivities.text.trim(),
+            economicActivities:
+                textEditingControllerEconomicActivities.text.trim(),
             region: textEditingControllerRegion.text.trim(),
             curiosity: textEditingControllerCuriosity.text.trim(),
           ),
@@ -436,22 +444,22 @@ abstract class StateControllerBase with Store {
     @required String curiosity,
   }) {
     StateForm form = StateForm();
-    form.name               = name;
-    form.acronym            = acronym;
-    form.fileInBase64       = fileInBase64;
-    form.capital            = capital;
-    form.gentle             = gentle;
-    form.territorialArea    = int.parse(territorialArea);
-    form.totalCounties      = int.parse(totalCounties);
-    form.totalPopulation    = int.parse(totalPopulation);
+    form.name = name;
+    form.acronym = acronym;
+    form.fileInBase64 = fileInBase64;
+    form.capital = capital;
+    form.gentle = gentle;
+    form.territorialArea = int.parse(territorialArea);
+    form.totalCounties = int.parse(totalCounties);
+    form.totalPopulation = int.parse(totalPopulation);
     form.demographicDensity = double.parse(demographicDensity);
-    form.idh                = double.parse(idh);
+    form.idh = double.parse(idh);
     form.borderingTerritory = borderingTerritory;
-    form.pib                = double.parse(pib);
-    form.naturalAspects     = naturalAspects;
+    form.pib = double.parse(pib);
+    form.naturalAspects = naturalAspects;
     form.economicActivities = economicActivities;
-    form.region             = region;
-    form.curiosity          = curiosity;
+    form.region = region;
+    form.curiosity = curiosity;
 
     return form;
   }

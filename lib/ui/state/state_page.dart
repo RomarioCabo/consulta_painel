@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mobx/mobx.dart';
@@ -391,6 +392,10 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       child: CustomTextFormField(
         labelText: text_field_territorial_area,
         hintText: hint_text_field_territorial_area,
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp('^[0-9]+')),
+        ],
         textEditingController:
             _stateController.textEditingControllerTerritorialArea,
         textInputAction: TextInputAction.next,

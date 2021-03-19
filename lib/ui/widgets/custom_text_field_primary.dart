@@ -17,8 +17,8 @@ class CustomTextFormField extends StatefulWidget {
   final bool enabled;
   final bool small;
   final double width;
-  final bool containsTextInputFormatter;
   final String hintText;
+  final List<TextInputFormatter> inputFormatters;
 
   CustomTextFormField({
     this.labelText,
@@ -35,8 +35,8 @@ class CustomTextFormField extends StatefulWidget {
     this.enabled = true,
     this.small = false,
     this.width,
-    this.containsTextInputFormatter = false,
     this.hintText = "",
+    this.inputFormatters
   });
 
   @override
@@ -85,11 +85,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           width: widget.width,
           margin: EdgeInsets.only(top: widget.labelText == null ? 0 : 8),
           child: TextFormField(
-            inputFormatters: widget.containsTextInputFormatter
-                ? <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                  ]
-                : null,
+            inputFormatters: widget.inputFormatters,
             decoration: InputDecoration(
               fillColor:
                   widget.enabled ? Colors.transparent : colorTextFieldDisabled,
