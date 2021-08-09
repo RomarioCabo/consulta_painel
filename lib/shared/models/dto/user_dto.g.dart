@@ -54,12 +54,44 @@ mixin _$UserDto on _UserDto, Store {
     });
   }
 
+  final _$tokenAtom = Atom(name: '_UserDto.token');
+
+  @override
+  String get token {
+    _$tokenAtom.reportRead();
+    return super.token;
+  }
+
+  @override
+  set token(String value) {
+    _$tokenAtom.reportWrite(value, super.token, () {
+      super.token = value;
+    });
+  }
+
+  final _$profileAtom = Atom(name: '_UserDto.profile');
+
+  @override
+  ProfileDto get profile {
+    _$profileAtom.reportRead();
+    return super.profile;
+  }
+
+  @override
+  set profile(ProfileDto value) {
+    _$profileAtom.reportWrite(value, super.profile, () {
+      super.profile = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 id: ${id},
 name: ${name},
-email: ${email}
+email: ${email},
+token: ${token},
+profile: ${profile}
     ''';
   }
 }

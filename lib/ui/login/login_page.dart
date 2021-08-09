@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: colorBackgroundSecondary,
       body: Container(
         child:
-        //_buildLeftContent()
+        //_buildLeftContent(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -81,9 +81,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildRightContent() {
-    return Image(
-      image: AssetImage(asset_image_lunch),
-      fit: BoxFit.cover,
+    return Opacity(
+      opacity: 0.6,
+      child: Image(
+        image: AssetImage(asset_image_lunch),
+        fit: BoxFit.cover,
+      ),
     );
   }
 

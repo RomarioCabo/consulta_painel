@@ -148,6 +148,21 @@ mixin _$UserController on UserControllerBase, Store {
     });
   }
 
+  final _$userProfileAtom = Atom(name: 'UserControllerBase.userProfile');
+
+  @override
+  UserProfile get userProfile {
+    _$userProfileAtom.reportRead();
+    return super.userProfile;
+  }
+
+  @override
+  set userProfile(UserProfile value) {
+    _$userProfileAtom.reportWrite(value, super.userProfile, () {
+      super.userProfile = value;
+    });
+  }
+
   final _$getAllUsersAsyncAction =
       AsyncAction('UserControllerBase.getAllUsers');
 
@@ -237,6 +252,17 @@ mixin _$UserController on UserControllerBase, Store {
   }
 
   @override
+  void setCurrentUser() {
+    final _$actionInfo = _$UserControllerBaseActionController.startAction(
+        name: 'UserControllerBase.setCurrentUser');
+    try {
+      return super.setCurrentUser();
+    } finally {
+      _$UserControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setFields(UserDto selectedUser, int index) {
     final _$actionInfo = _$UserControllerBaseActionController.startAction(
         name: 'UserControllerBase.setFields');
@@ -258,7 +284,8 @@ errorPassword: ${errorPassword},
 errorConfirmPassword: ${errorConfirmPassword},
 validatedAll: ${validatedAll},
 message: ${message},
-users: ${users}
+users: ${users},
+userProfile: ${userProfile}
     ''';
   }
 }

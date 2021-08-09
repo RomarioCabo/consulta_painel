@@ -15,8 +15,10 @@ class LoginController = LoginControllerBase with _$LoginController;
 abstract class LoginControllerBase with Store {
   BuildContext context;
 
-  TextEditingController textEditingControllerEmail = TextEditingController(text: "romariocabo2012@gmail.com");
-  TextEditingController textEditingControllerPassword = TextEditingController(text: "123");
+  TextEditingController textEditingControllerEmail =
+      TextEditingController(text: "romariocabo2012@gmail.com");
+  TextEditingController textEditingControllerPassword =
+      TextEditingController(text: "123");
 
   FocusNode focusNodeEmail = FocusNode();
   FocusNode focusNodePassword = FocusNode();
@@ -78,9 +80,7 @@ abstract class LoginControllerBase with Store {
         }
 
         this.requestState = Completed();
-      } catch (e, stackTrace) {
-        print(stackTrace);
-
+      } catch (e) {
         this.requestState = Error(
           error: e.toString().replaceAll("Exception:", ""),
         );

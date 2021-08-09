@@ -9,11 +9,13 @@ class UserRepository {
 
   Future<UserDto> save({
     @required UserForm form,
+    @required String authorization,
   }) async {
     try {
       final response = await _helper.post(
         url: 'user/save',
         body: form.toJson(),
+        authorization: authorization,
       );
 
       return UserDto.fromJson(response);
@@ -24,36 +26,48 @@ class UserRepository {
 
   Future<UserDto> put({
     @required UserForm form,
-    @required int userId
+    @required int userId,
+    @required int profileId,
+    @required String authorization,
   }) async {
     try {
       final response = await _helper.put(
         url: 'user/update',
         body: form.toJson(),
-        pathVariable: userId.toString(),
+        pathVariable: '${userId.toString()}/${profileId.toString()}',
+        authorization: authorization,
       );
 
       return UserDto.fromJson(response);
     } catch (e) {
+      print(e);
+
       throw Exception(e);
     }
   }
 
-  Future<void> delete({@required int userId}) async {
+  Future<void> delete({
+    @required int userId,
+    @required String authorization,
+  }) async {
     try {
       await _helper.delete(
         url: 'user/delete',
         pathVariable: userId.toString(),
+        authorization: authorization,
       );
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  Future<List<UserDto>> getAllUsers() async {
+  Future<List<UserDto>> getAllUsers({
+    @required String authorization,
+  }) async {
     try {
       final response = await _helper.get(
         url: 'user',
+        authorization: authorization,
       );
 
       return List<UserDto>.from(

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -11,9 +10,11 @@ class ApiBaseHelper {
   Future<dynamic> post({
     @required String url,
     @required String body,
+    String authorization,
   }) async {
     return await _request(
       httpMethod: "POST",
+      authorization: authorization,
       url: url,
       body: body,
     );
@@ -23,9 +24,11 @@ class ApiBaseHelper {
     @required String url,
     @required String body,
     @required String pathVariable,
+    String authorization,
   }) async {
     return await _request(
       httpMethod: "PUT",
+      authorization: authorization,
       url: url,
       pathVariable: pathVariable,
       body: body,
@@ -35,9 +38,11 @@ class ApiBaseHelper {
   Future<dynamic> delete({
     @required String url,
     @required String pathVariable,
+    String authorization,
   }) async {
     return await _request(
       httpMethod: "DELETE",
+      authorization: authorization,
       url: url,
       pathVariable: pathVariable,
     );
@@ -47,9 +52,11 @@ class ApiBaseHelper {
     @required String url,
     String queryParams,
     String pathVariable,
+    String authorization,
   }) async {
     return await _request(
       httpMethod: "GET",
+      authorization: authorization,
       url: url,
       queryParams: queryParams,
       pathVariable: pathVariable,
@@ -62,23 +69,27 @@ class ApiBaseHelper {
     String body,
     String queryParams,
     String pathVariable,
+    String authorization,
   }) async {
-    dynamic responseJson;
-
     try {
-      var headers;
+      Map<String, String> headers;
 
       headers = {'Content-Type': 'application/json'};
+
+      if(authorization != null) {
+        headers.addAll({'Authorization': authorization});
+      }
 
       queryParams = queryParams == null ? "" : "?$queryParams";
       pathVariable = pathVariable == null ? "" : "/$pathVariable";
 
+      String uri = "$base_url$url$queryParams$pathVariable";
+
       if (!kReleaseMode) {
-        print("$base_url$url$queryParams$pathVariable");
+        print("URI: $uri");
       }
 
-      var request = http.Request(
-          httpMethod, Uri.parse("$base_url$url$queryParams$pathVariable"));
+      var request = http.Request(httpMethod, Uri.parse(uri));
 
       if (body != null) {
         request.body = body;
@@ -86,12 +97,9 @@ class ApiBaseHelper {
 
       request.headers.addAll(headers);
 
-      http.Response response =
-          await http.Response.fromStream(await request.send());
+      http.Response response = await http.Response.fromStream(await request.send());
 
-      responseJson = _returnResponse(response);
-
-      return responseJson;
+      return _returnResponse(response);
     } catch (e) {
       throw Exception(e);
     }
@@ -117,7 +125,7 @@ class ApiBaseHelper {
 
         throw BadRequestException(
           response.statusCode,
-          error["menssagem"],
+          error["message"],
         );
 
       case 401:
@@ -126,7 +134,7 @@ class ApiBaseHelper {
 
         throw UnauthorisedException(
           response.statusCode,
-          error["menssagem"],
+          error["message"],
         );
 
       case 500:
@@ -135,7 +143,7 @@ class ApiBaseHelper {
 
         throw FetchDataException(
           response.statusCode,
-          error["menssagem"],
+          error["message"],
         );
     }
   }

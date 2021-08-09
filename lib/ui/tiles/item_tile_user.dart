@@ -71,12 +71,10 @@ class _ItemTileUserState extends State<ItemTileUser> {
             icon: const Icon(Icons.edit),
             onPressed: widget.onPressedEdit,
           ),
-          widget.item.id == 1
-              ? Container()
-              : IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: widget.onPressedDelete,
-                ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: widget.onPressedDelete,
+          ),
         ],
       ),
     );

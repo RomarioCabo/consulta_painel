@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:painel_cunsulta/constants/colors.dart';
 import 'package:painel_cunsulta/constants/strings.dart';
 import 'package:painel_cunsulta/shared/models/dto/user_dto.dart';
+import 'package:painel_cunsulta/shared/models/enum/user_profile.dart';
 import 'package:painel_cunsulta/shared/repositories/api/helpers/request_state.dart';
 import 'package:painel_cunsulta/ui/dialogs/manager_dialogs.dart';
 import 'package:painel_cunsulta/ui/tiles/item_tile_user.dart';
@@ -24,6 +26,9 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
 
   AnimationController _animationController;
   Animation<double> _opacity;
+
+  ScrollController _scrollControllerPrincipal;
+  ScrollController _scrollControllerListView;
 
   /// Reactions
   final List<ReactionDisposer> _disposers = [];
@@ -48,7 +53,12 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
       ),
     );
 
+    _scrollControllerPrincipal = ScrollController();
+    _scrollControllerListView = ScrollController();
+
     _userController = UserController();
+    _userController.setCurrentUser();
+
     _userController.getAllUsers();
 
     /// Reações
@@ -101,7 +111,9 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
       child: Scaffold(
-        body: _bodyContent(),
+        body: SafeArea(
+          child: _bodyContent(),
+        ),
       ),
     );
   }
@@ -119,21 +131,29 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
   }
 
   Widget _buildFields() {
-    return Container(
-      margin: EdgeInsets.all(32),
-      child: CustomAnimatedBuilder(
-        animationController: _animationController,
-        opacity: _opacity,
-        contentChild: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildTextFieldName(),
-            _buildTextFieldEMail(),
-            _buildRowChangePassword(),
-            _buildRowButtons(),
-            _buildTitleTable(),
-            _buildContentTable(),
-          ],
+    return Scrollbar(
+      isAlwaysShown: true,
+      controller: _scrollControllerPrincipal,
+      child: SingleChildScrollView(
+        controller: _scrollControllerPrincipal,
+        child: Container(
+          margin: EdgeInsets.only(top: 52, left: 152, right: 152, bottom: 52),
+          child: CustomAnimatedBuilder(
+            animationController: _animationController,
+            opacity: _opacity,
+            contentChild: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildTextFieldName(),
+                _buildTextFieldEMail(),
+                _buildRowChangePassword(),
+                _buildRowRadioButtons(),
+                _buildRowButtons(),
+                _buildTitleTable(),
+                _buildContentTable(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -187,6 +207,77 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
           ),
           Expanded(
             child: _buildTextFieldConfirmPassword(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRowRadioButtons() {
+    return Container(
+      margin: EdgeInsets.only(top: 12),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Acesso ao painel?",
+            style: styleTextField,
+          ),
+          Container(
+            height: 8,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 1,
+                color: Colors.grey,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.0),
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<UserProfile>(
+                    title: Text(
+                      "Sim",
+                      style: TextStyle(
+                        color: colorTextField,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ),
+                    value: UserProfile.ROLE_ADMIN,
+                    groupValue: _userController.userProfile,
+                    onChanged: (UserProfile value) {
+                      _userController.userProfile = value;
+                    },
+                  ),
+                ),
+                Container(
+                  width: 14,
+                ),
+                Expanded(
+                  child: RadioListTile<UserProfile>(
+                    title: Text(
+                      "Não",
+                      style: TextStyle(
+                        color: colorTextField,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ),
+                    value: UserProfile.ROLE_CLIENT,
+                    groupValue: _userController.userProfile,
+                    onChanged: (UserProfile value) {
+                      _userController.userProfile = value;
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -335,23 +426,29 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
     if (_userController.users == null) {
       return Container();
     } else {
-      return Expanded(
-        child: ListView.builder(
-          itemCount: _userController.users.length,
-          itemBuilder: (context, index) {
-            return ItemTileUser(
-              item: _userController.users[index],
-              onPressedEdit: () {
-                _userController.setFields(
-                  _userController.users[index],
-                  index,
-                );
-              },
-              onPressedDelete: () {
-                _openConfirmDialog(_userController.users[index]);
-              },
-            );
-          },
+      return Container(
+        height: 400,
+        child: Scrollbar(
+          isAlwaysShown: true,
+          controller: _scrollControllerListView,
+          child: ListView.builder(
+            controller: _scrollControllerListView,
+            itemCount: _userController.users.length,
+            itemBuilder: (context, index) {
+              return ItemTileUser(
+                item: _userController.users[index],
+                onPressedEdit: () {
+                  _userController.setFields(
+                    _userController.users[index],
+                    index,
+                  );
+                },
+                onPressedDelete: () {
+                  _openConfirmDialog(_userController.users[index]);
+                },
+              );
+            },
+          ),
         ),
       );
     }

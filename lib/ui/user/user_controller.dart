@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:painel_cunsulta/constants/strings.dart';
 import 'package:painel_cunsulta/shared/models/dto/user_dto.dart';
+import 'package:painel_cunsulta/shared/models/enum/user_profile.dart';
 import 'package:painel_cunsulta/shared/models/form/user_form.dart';
 import 'package:painel_cunsulta/shared/repositories/api/helpers/request_state.dart';
 import 'package:painel_cunsulta/shared/repositories/api/user_repository.dart';
 import 'package:mobx/mobx.dart';
+import 'package:painel_cunsulta/shared/repositories/local_storage_shared_preferences/local_storage_shared_preferences.dart';
 
 part 'user_controller.g.dart';
 
@@ -47,12 +50,21 @@ abstract class UserControllerBase with Store {
   String message = "";
 
   int _selectedIdUser;
+  int _selectedIdProfile;
   int _index;
 
   @observable
   ObservableList<UserDto> users;
 
   UserDto _user;
+
+  UserDto _userDto;
+
+  @observable
+  UserProfile userProfile = UserProfile.ROLE_ADMIN;
+
+  LocalStorageSharedPreferences _localStorageSharedPreferences =
+      GetIt.I<LocalStorageSharedPreferences>();
 
   UserRepository _userRepository = UserRepository();
 
@@ -119,6 +131,11 @@ abstract class UserControllerBase with Store {
   }
 
   @action
+  void setCurrentUser() {
+    _userDto = _localStorageSharedPreferences.getUser();
+  }
+
+  @action
   Future<void> getAllUsers() async {
     try {
       requestStateInitial = Loading();
@@ -126,7 +143,9 @@ abstract class UserControllerBase with Store {
       await Future.delayed(Duration(seconds: 1));
 
       users = ObservableList<UserDto>.of(
-        await _userRepository.getAllUsers(),
+        await _userRepository.getAllUsers(
+          authorization: _userDto.token,
+        ),
       );
 
       requestStateInitial = Completed();
@@ -153,6 +172,7 @@ abstract class UserControllerBase with Store {
         await Future.delayed(Duration(seconds: 1));
 
         _user = await _userRepository.save(
+          authorization: _userDto.token,
           form: _getUser(
             name: textEditingControllerName.text.trim(),
             email: textEditingControllerEmail.text.trim(),
@@ -184,7 +204,10 @@ abstract class UserControllerBase with Store {
 
       await Future.delayed(Duration(seconds: 1));
 
-      await _userRepository.delete(userId: user.id);
+      await _userRepository.delete(
+        authorization: _userDto.token,
+        userId: user.id,
+      );
 
       message = success_delete_message;
 
@@ -204,6 +227,10 @@ abstract class UserControllerBase with Store {
     textEditingControllerEmail.text = selectedUser.email;
 
     _selectedIdUser = selectedUser.id;
+    _selectedIdProfile = selectedUser.profile.id;
+    userProfile = selectedUser.profile.codProfile == 1
+        ? UserProfile.ROLE_ADMIN
+        : UserProfile.ROLE_CLIENT;
     _index = index;
   }
 
@@ -225,12 +252,14 @@ abstract class UserControllerBase with Store {
 
       if (errorName == null && errorEmail == null) {
         _user = await _userRepository.put(
+          authorization: _userDto.token,
           form: _getUser(
             name: textEditingControllerName.text.trim(),
             email: textEditingControllerEmail.text.trim(),
             password: _getPassword(textEditingControllerPassword.text.trim()),
           ),
           userId: _selectedIdUser,
+          profileId: _selectedIdProfile,
         );
 
         message = success_update_message;
@@ -245,7 +274,9 @@ abstract class UserControllerBase with Store {
       }
 
       requestStateCrud = Completed();
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print(stackTrace);
+
       this.requestStateCrud = Error(
         error: e.toString().replaceAll("Exception:", ""),
       );
@@ -258,9 +289,10 @@ abstract class UserControllerBase with Store {
     String password,
   }) {
     UserForm form = UserForm();
-    form.name = name;
-    form.email = email;
-    form.password = password;
+    form.name = name.isEmpty ? null : name;
+    form.email = email.isEmpty ? null : email;
+    form.password = password.isEmpty ? null : password;
+    form.codProfile = userProfile == UserProfile.ROLE_ADMIN ? 1 : 2;
 
     return form;
   }
@@ -270,6 +302,7 @@ abstract class UserControllerBase with Store {
     textEditingControllerEmail.text = "";
     textEditingControllerPassword.text = "";
     textEditingControllerConfirmPassword.text = "";
+    userProfile = UserProfile.ROLE_ADMIN;
   }
 
   String _getPassword(String password) {

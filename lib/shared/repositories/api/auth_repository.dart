@@ -10,7 +10,6 @@ class AuthRepository {
   Future<UserDto> login({
     @required AuthenticateForm authenticate,
   }) async {
-
     try {
       final response = await _helper.post(
         body: authenticate.toJson(),

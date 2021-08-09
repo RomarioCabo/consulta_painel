@@ -160,7 +160,7 @@ class _StatePageState extends State<StatePage> with TickerProviderStateMixin {
       child: SingleChildScrollView(
         controller: _scrollControllerPrincipal,
         child: Container(
-          margin: EdgeInsets.all(32),
+          margin: EdgeInsets.only(top: 52, left: 152, right: 152, bottom: 52),
           child: CustomAnimatedBuilder(
             animationController: _animationController,
             opacity: _opacity,

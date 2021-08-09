@@ -546,21 +546,21 @@ mixin _$StateController on StateControllerBase, Store {
 
   @override
   void validatedAll(
-      {@required String name,
-      @required String acronym,
-      @required String image,
-      @required String capital,
-      @required String gentle,
-      @required String territorialArea,
-      @required String totalCounties,
-      @required String totalPopulation,
-      @required String demographicDensity,
-      @required String idh,
-      @required String borderingTerritory,
-      @required String pib,
-      @required String naturalAspects,
-      @required String economicActivities,
-      @required String region}) {
+      {String name,
+      String acronym,
+      String image,
+      String capital,
+      String gentle,
+      String territorialArea,
+      String totalCounties,
+      String totalPopulation,
+      String demographicDensity,
+      String idh,
+      String borderingTerritory,
+      String pib,
+      String naturalAspects,
+      String economicActivities,
+      String region}) {
     final _$actionInfo = _$StateControllerBaseActionController.startAction(
         name: 'StateControllerBase.validatedAll');
     try {
